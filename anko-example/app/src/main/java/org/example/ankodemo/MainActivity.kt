@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType.TYPE_CLASS_TEXT
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+import android.util.Log
 import android.view.Gravity
+import android.view.ViewManager
 import android.widget.Button
 import android.widget.EditText
 import org.jetbrains.anko.*
+import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +37,9 @@ class MainActivity : AppCompatActivity() {
     private fun checkCredentials(name: String, password: String) = name == "user" && password == "password"
 }
 
-class MainActivityUi : AnkoComponent<MainActivity> {
+class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
+
+
     private val customStyle = { v: Any ->
         when (v) {
             is Button -> v.textSize = 26f
@@ -42,7 +47,10 @@ class MainActivityUi : AnkoComponent<MainActivity> {
         }
     }
 
+
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
+
+
         verticalLayout {
             padding = dip(32)
 
@@ -62,6 +70,33 @@ class MainActivityUi : AnkoComponent<MainActivity> {
             button("Log in") {
                 onClick {
                     ui.owner.tryLogin(ui, name.text, password.text)
+                }
+            }
+
+            button("Button 2") {
+                onClick {
+
+                    info("London is the capital of Great Britain")
+                    warn(null) // "null" will be printed
+
+                    val tag = loggerTag
+
+                    if (Log.isLoggable(tag, Log.DEBUG)) {
+                        // Logging is only enabled with the isLoggable set...
+                    }
+
+                    debug("this is button 2 click").toString()
+                    info("test")
+                    toast("Hello, ${name.text}!")
+
+                    /*
+
+                    alert {
+                        customView {
+                            myRichView()
+                        }
+                    }.show()
+                    */
                 }
             }
 
